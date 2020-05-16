@@ -73,7 +73,7 @@ class MsGraphMailTransport extends Transport {
         } catch (BadResponseException $e) {
             // The API responded with 4XX or 5XX error
             $response = json_decode((string)$e->getResponse()->getBody());
-            throw CouldNotSendMail::serviceRespondedWithError($response->status, $response->message);
+            throw CouldNotSendMail::serviceRespondedWithError($response->error->code, $response->error->message);
         } catch (ConnectException $e) {
             // A connection error (DNS, timeout, ...) occurred
             throw CouldNotReachService::networkError();
