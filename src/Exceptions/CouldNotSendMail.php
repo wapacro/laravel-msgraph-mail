@@ -9,7 +9,7 @@ use Exception;
 class CouldNotSendMail extends Exception {
 
     public static function invalidConfig() {
-        return new static('The mail.php configuration is missing transport, client and/or secret key');
+        return new static('The mail.php configuration is missing from address, transport, client and/or secret key configuration');
     }
 
     public static function serviceRespondedWithError(string $code, string $message) {

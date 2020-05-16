@@ -14,7 +14,7 @@ class MsGraphMailServiceProvider extends ServiceProvider {
      */
     public function boot() {
         $this->app->get('mail.manager')->extend('microsoft-graph', function (array $config) {
-            if (!isset($config['client']) || !isset($config['secret']) || !isset($config['transport'])) {
+            if (!isset($config['client']) || !isset($config['secret']) || !isset($config['transport']) || !$this->app['config']->get('mail.from.address', false)) {
                 throw CouldNotSendMail::invalidConfig();
             }
 
