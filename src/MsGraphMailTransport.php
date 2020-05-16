@@ -14,7 +14,8 @@ use Illuminate\Support\Str;
 use LaravelMsGraphMail\Exceptions\CouldNotGetToken;
 use LaravelMsGraphMail\Exceptions\CouldNotReachService;
 use LaravelMsGraphMail\Exceptions\CouldNotSendMail;
-use Swift_Attachment;
+use Swift_Mime_Attachment;
+use Swift_Mime_EmbeddedFile;
 use Swift_Mime_SimpleMessage;
 
 class MsGraphMailTransport extends Transport {
@@ -161,17 +162,18 @@ class MsGraphMailTransport extends Transport {
         $collection = [];
 
         foreach ($attachments as $attachment) {
-            if (!$attachment instanceof Swift_Attachment) {
+            if (!$attachment instanceof Swift_Mime_Attachment) {
                 continue;
             }
 
             $collection[] = [
                 'name' => $attachment->getFilename(),
+                'contentId' => $attachment->getId(),
                 'contentType' => $attachment->getContentType(),
                 'contentBytes' => base64_encode($attachment->getBody()),
                 'size' => strlen($attachment->getBody()),
                 '@odata.type' => '#microsoft.graph.fileAttachment',
-                'isInline' => false,
+                'isInline' => $attachment instanceof Swift_Mime_EmbeddedFile,
             ];
 
         }
