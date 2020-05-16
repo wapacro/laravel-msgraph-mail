@@ -107,7 +107,7 @@ class MsGraphMailTransport extends Transport {
                 'contentType' => Str::contains($message->getContentType(), 'html') ? 'html' : 'text',
                 'content' => $message->getBody(),
             ],
-            'attachment' => $this->toAttachmentCollection($attachments),
+            'attachments' => $this->toAttachmentCollection($attachments),
         ]);
     }
 
@@ -168,8 +168,8 @@ class MsGraphMailTransport extends Transport {
             $collection[] = [
                 'name' => $attachment->getFilename(),
                 'contentType' => $attachment->getContentType(),
-                'contentBytes' => $attachment->getBody(),
-                'size' => $attachment->getSize(),
+                'contentBytes' => base64_encode($attachment->getBody()),
+                'size' => strlen($attachment->getBody()),
                 '@odata.type' => '#microsoft.graph.fileAttachment',
                 'isInline' => false,
             ];
