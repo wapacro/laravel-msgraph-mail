@@ -188,7 +188,7 @@ class MsGraphMailTransport extends Transport {
     protected function getHeaders() {
         return [
             'Accept' => 'application/json',
-            'Authorization' => 'Bearer' . $this->getAccessToken(),
+            'Authorization' => 'Bearer ' . $this->getAccessToken(),
         ];
     }
 
