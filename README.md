@@ -3,7 +3,7 @@
 This package makes it easy to send emails from your personal, work or school account using Microsoft's Graph API,
 allowing you to benefit from HTTP instead of SMTP with Laravel 7.x.
 
-_Tested with personal and company (Microsoft 365 Business) accounts_
+_Tested with different company (Microsoft 365 Business) accounts_
 
 ## Installation
 
