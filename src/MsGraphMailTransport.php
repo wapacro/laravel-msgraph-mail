@@ -56,6 +56,7 @@ class MsGraphMailTransport extends Transport {
      * @return int
      * @throws CouldNotSendMail
      * @throws CouldNotReachService
+     * @throws CouldNotGetToken
      */
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null) {
         $this->beforeSendPerformed($message);
@@ -79,9 +80,6 @@ class MsGraphMailTransport extends Transport {
         } catch (ConnectException $e) {
             // A connection error (DNS, timeout, ...) occurred
             throw CouldNotReachService::networkError();
-        } catch (Exception $e) {
-            // An unknown error occurred
-            throw CouldNotReachService::unknownError();
         }
     }
 
@@ -219,7 +217,7 @@ class MsGraphMailTransport extends Transport {
         } catch (BadResponseException $e) {
             // The endpoint responded with 4XX or 5XX error
             $response = json_decode((string)$e->getResponse()->getBody());
-            throw CouldNotGetToken::serviceRespondedWithError($response->status, $response->message);
+            throw CouldNotGetToken::serviceRespondedWithError($response->error, $response->error_description);
         } catch (ConnectException $e) {
             // A connection error (DNS, timeout, ...) occurred
             throw CouldNotReachService::networkError();
