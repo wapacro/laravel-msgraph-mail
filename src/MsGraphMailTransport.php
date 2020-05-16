@@ -60,12 +60,14 @@ class MsGraphMailTransport extends Transport {
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null) {
         $this->beforeSendPerformed($message);
         $payload = $this->getPayload($message);
-        $url = str_replace('{from}', urlencode($payload['from'][0]['emailAddress']['address']), $this->apiEndpoint);
+        $url = str_replace('{from}', urlencode($payload['from']['emailAddress']['address']), $this->apiEndpoint);
 
         try {
             $this->http->post($url, [
                 'headers' => $this->getHeaders(),
-                'json' => $payload,
+                'json' => [
+                    'message' => $payload,
+                ],
             ]);
 
             $this->sendPerformed($message);
@@ -96,8 +98,8 @@ class MsGraphMailTransport extends Transport {
 
         return array_filter([
             'subject' => $message->getSubject(),
-            'sender' => $this->toRecipientCollection($from),
-            'from' => $this->toRecipientCollection($from),
+            'sender' => $this->toRecipientCollection($from)[0],
+            'from' => $this->toRecipientCollection($from)[0],
             'replyTo' => $this->toRecipientCollection($message->getReplyTo()),
             'toRecipients' => $this->toRecipientCollection($message->getTo()),
             'ccRecipients' => $this->toRecipientCollection($message->getCc()),
