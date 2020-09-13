@@ -1,7 +1,7 @@
 # Laravel Microsoft Graph Mail
 
 This package makes it easy to send emails from your personal, work or school account using Microsoft's Graph API,
-allowing you to benefit from HTTP instead of SMTP with Laravel 7.x.
+allowing you to benefit from HTTP instead of SMTP with Laravel.
 
 _Tested with different company (Microsoft 365 Business) accounts_
 
@@ -34,6 +34,16 @@ Valid values for `tenant` are your tenant identifier (work & school accounts) or
 
 **Note:** This package relies on [Laravel's Cache](https://laravel.com/docs/cache) interface for caching access tokens.
 Make sure to configure it properly, too!
+
+### Version
+
+The latest version is only compatible with Laravel 8.x. Use an older version if you didn't upgrade to Laravel 8 yet:
+
+| Package Version | Laravel Version |
+|-----------------|-----------------|
+| ^1.0            | 7.x             |
+| ^2.0            | 8.x             |
+
 
 ### Getting the credentials
 
