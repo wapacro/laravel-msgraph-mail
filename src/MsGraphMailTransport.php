@@ -59,7 +59,7 @@ class MsGraphMailTransport extends Transport {
      * @throws CouldNotReachService
      * @throws CouldNotGetToken
      */
-    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null): int {
         $this->beforeSendPerformed($message);
         $payload = $this->getPayload($message);
         $url = str_replace('{from}', urlencode($payload['from']['emailAddress']['address']), $this->apiEndpoint);
@@ -90,7 +90,7 @@ class MsGraphMailTransport extends Transport {
      * @param Swift_Mime_SimpleMessage $message
      * @return array
      */
-    protected function getPayload(Swift_Mime_SimpleMessage $message) {
+    protected function getPayload(Swift_Mime_SimpleMessage $message): array {
         $from = $message->getFrom();
         $priority = $message->getPriority();
         $attachments = $message->getChildren();
@@ -118,7 +118,7 @@ class MsGraphMailTransport extends Transport {
      * @param array|string $recipients
      * @return array
      */
-    protected function toRecipientCollection($recipients) {
+    protected function toRecipientCollection($recipients): array {
         $collection = [];
 
         // If the provided list is empty
@@ -158,7 +158,7 @@ class MsGraphMailTransport extends Transport {
      * @param $attachments
      * @return array
      */
-    protected function toAttachmentCollection($attachments) {
+    protected function toAttachmentCollection($attachments): array {
         $collection = [];
 
         foreach ($attachments as $attachment) {
@@ -187,7 +187,7 @@ class MsGraphMailTransport extends Transport {
      * @throws CouldNotGetToken
      * @throws CouldNotReachService
      */
-    protected function getHeaders() {
+    protected function getHeaders(): array {
         return [
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $this->getAccessToken(),
@@ -200,7 +200,7 @@ class MsGraphMailTransport extends Transport {
      * @throws CouldNotReachService
      * @throws CouldNotGetToken
      */
-    protected function getAccessToken() {
+    protected function getAccessToken(): string {
         try {
             return Cache::remember('mail-msgraph-accesstoken', 45, function () {
                 $url = str_replace('{tenant}', $this->config['tenant'] ?? 'common', $this->tokenEndpoint);
