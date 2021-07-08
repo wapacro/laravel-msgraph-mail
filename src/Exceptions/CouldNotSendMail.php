@@ -12,7 +12,7 @@ class CouldNotSendMail extends Exception {
         return new static('The mail.php configuration is missing from address, transport, client and/or secret key configuration');
     }
 
-    public static function serviceRespondedWithError(string $code, string $message): CouldNotSendMail {
+    public static function serviceRespondedWithError(?string $code, ?string $message): CouldNotSendMail {
         return new static('Microsoft Graph API responded with code ' . $code . ': ' . $message);
     }
 

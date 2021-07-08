@@ -11,6 +11,7 @@ class MsGraphMailServiceProvider extends ServiceProvider {
     /**
      * Boot any application services.
      * @return void
+     * @throws CouldNotSendMail
      */
     public function boot() {
         $this->app->get('mail.manager')->extend('microsoft-graph', function (array $config) {

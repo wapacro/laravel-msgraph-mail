@@ -3,7 +3,6 @@
 
 namespace LaravelMsGraphMail;
 
-use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
@@ -17,6 +16,7 @@ use LaravelMsGraphMail\Exceptions\CouldNotSendMail;
 use Swift_Mime_Attachment;
 use Swift_Mime_EmbeddedFile;
 use Swift_Mime_SimpleMessage;
+use Throwable;
 
 class MsGraphMailTransport extends Transport {
 
@@ -57,7 +57,6 @@ class MsGraphMailTransport extends Transport {
      * @return int
      * @throws CouldNotSendMail
      * @throws CouldNotReachService
-     * @throws CouldNotGetToken
      */
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null): int {
         $this->beforeSendPerformed($message);
@@ -76,11 +75,13 @@ class MsGraphMailTransport extends Transport {
             return $this->numberOfRecipients($message);
         } catch (BadResponseException $e) {
             // The API responded with 4XX or 5XX error
-            $response = json_decode((string)$e->getResponse()->getBody());
-            throw CouldNotSendMail::serviceRespondedWithError($response->error->code, $response->error->message);
+            if ($e->hasResponse()) $response = json_decode((string)$e->getResponse()->getBody());
+            throw CouldNotSendMail::serviceRespondedWithError($response->error->code ?? 'Unknown', $response->error->message ?? 'Unknown error');
         } catch (ConnectException $e) {
             // A connection error (DNS, timeout, ...) occurred
             throw CouldNotReachService::networkError();
+        } catch (Throwable $e) {
+            throw CouldNotReachService::unknownError();
         }
     }
 
@@ -223,7 +224,7 @@ class MsGraphMailTransport extends Transport {
         } catch (ConnectException $e) {
             // A connection error (DNS, timeout, ...) occurred
             throw CouldNotReachService::networkError();
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             // An unknown error occurred
             throw CouldNotReachService::unknownError();
         }
