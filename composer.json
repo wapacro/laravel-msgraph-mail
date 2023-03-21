@@ -1,7 +1,7 @@
 {
-  "name": "wapacro/laravel-msgraph-mail",
+  "name": "jonathanroy/laravel-msgraph-mail",
   "type": "library",
-  "description": "Laravel mail driver to send emails using Microsoft Graph, supporting both personal accounts as well as work/school accounts (365/Exchange)",
+  "description": "Laravel mail driver to send emails using Microsoft Graph, supporting both personal accounts as well as work/school accounts (365/Exchange) - fork of wapacro/laravel-msgraph-mail",
   "keywords": [
     "laravel",
     "mail",
