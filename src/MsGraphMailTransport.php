@@ -196,7 +196,7 @@ class MsGraphMailTransport extends Transport {
             $name = $header->getFieldName();
             $body = $header->getFieldBody();
 
-            if (isset($name, $body) && str_starts_with('X-', $name)) {
+            if (isset($name, $body) && str_starts_with($name, 'X-')) {
                 $customHeaders[] = [
                     'name' => $name,
                     'value' => $body,
