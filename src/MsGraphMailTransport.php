@@ -106,7 +106,7 @@ class MsGraphMailTransport extends Transport {
             'bccRecipients' => $this->toRecipientCollection($message->getBcc()),
             'importance' => $priority === 3 ? 'Normal' : ($priority < 3 ? 'Low' : 'High'),
             'body' => [
-                'contentType' => Str::contains($message->getContentType(), ['text', 'plain']) ? 'text' : 'html',
+                'contentType' => $message->getContentType() === 'text/plain' ? 'text' : 'html',
                 'content' => $message->getBody(),
             ],
             'attachments' => $this->toAttachmentCollection($attachments),
